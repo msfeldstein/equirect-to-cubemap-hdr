@@ -1,0 +1,21 @@
+{
+  "name": "equicube",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "get-pixels": "^3.3.0",
+    "hdr": "^0.6.1",
+    "jpeg-js": "^0.3.3",
+    "mmme-encoding": "^0.5.1",
+    "node-bitarray": "^0.1.0",
+    "rle": "^1.0.2",
+    "thing-rle-pack": "^0.2.1"
+  }
+}

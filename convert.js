@@ -27,26 +27,3 @@ hdrLoader.on('load', function() {
 })
 const file = fs.createReadStream('./radiance.hdr')
 file.pipe(hdrLoader)
-
-// 
-// getPixels('./basic.jpeg', function(err, ndArray) {
-//   const equirectPixels = ndArray.data
-//   equirectPixels.width = ndArray.shape[0]
-//   equirectPixels.height = ndArray.shape[1]
-//   console.log("Pixels", equirectPixels)
-//   
-//   const cubes = EquirectToCubemapFaces(equirectPixels, 256)
-//   let i = 0
-//   cubes.forEach((cube) => {
-//     console.log(cube.buffer.length)
-//     const jpegData = jpeg.encode({
-//       data: cube,
-//       width: 256,
-//       height: 256
-//     }, 50)
-//     console.log(jpegData)
-//     fs.writeFileSync(`./out/${i++}.jpg`, jpegData.data)
-//   })
-// 
-// })
-// 

@@ -57,7 +57,7 @@ var equirectToCubemapFaces = (function() {
 			for (var i = 0; i < faceWidth; ++i) {
 				var a = iFaceWidth2 * i;
 				var b = iFaceHeight2 * j;
-				var outPos = (i + j * edge) << 2;
+				var outPos = (i + j * edge) * opts.elementCount;
 				var x = 0.0, y = 0.0, z = 0.0;
 				// @@NOTE: Tried using explicit matrices for this and didn't see any
 				// speedup over the (IMO more understandable) switch. (Probably because these
@@ -80,7 +80,7 @@ var equirectToCubemapFaces = (function() {
 				var ui = floor(uf), vi = floor(vf);
 
 				if (smoothNearest) {
-					var inPos = ((ui % inWidth) + inWidth * clamp(vi, 0, inHeight-1)) << 2;
+					var inPos = ((ui % inWidth) + inWidth * clamp(vi, 0, inHeight-1)) * opts.elementCount;
 					faceData[outPos + 0] = inData[inPos + 0];
 					faceData[outPos + 1] = inData[inPos + 1];
 					faceData[outPos + 2] = inData[inPos + 2];
@@ -90,10 +90,10 @@ var equirectToCubemapFaces = (function() {
 					var u2 = ui+1, v2 = vi+1;
 					var mu = uf-ui, nu = vf-vi;
 
-					var pA = ((ui % inWidth) + inWidth * clamp(vi, 0, inHeight-1)) << 2;
-					var pB = ((u2 % inWidth) + inWidth * clamp(vi, 0, inHeight-1)) << 2;
-					var pC = ((ui % inWidth) + inWidth * clamp(v2, 0, inHeight-1)) << 2;
-					var pD = ((u2 % inWidth) + inWidth * clamp(v2, 0, inHeight-1)) << 2;
+					var pA = ((ui % inWidth) + inWidth * clamp(vi, 0, inHeight-1)) * opts.elementCount;
+					var pB = ((u2 % inWidth) + inWidth * clamp(vi, 0, inHeight-1)) * opts.elementCount;
+					var pC = ((ui % inWidth) + inWidth * clamp(v2, 0, inHeight-1)) * opts.elementCount;
+					var pD = ((u2 % inWidth) + inWidth * clamp(v2, 0, inHeight-1)) * opts.elementCount;
 					var aA = (inData[pA+3])*(1.0 / 255.0)
 					var aB = (inData[pB+3])*(1.0 / 255.0)
 					var aC = (inData[pC+3])*(1.0 / 255.0)
@@ -142,12 +142,15 @@ var equirectToCubemapFaces = (function() {
 			throw new Error("faceSize needed to be a number or missing");
 		}
     const pixelType = options.pixelType || Uint8ClampedArray
-    const elementCount = options.alpha ? 4 : 3
+    options.elementCount = options.alpha ? 4 : 3
 		var faces = [];
+
+    const names = ["px", "nx", "py", "ny", "pz", "nz"]
 		for (var i = 0; i < 6; ++i) {
-			var faceData = new pixelType(faceSize * faceSize * 4)
+			var faceData = new pixelType(faceSize * faceSize * options.elementCount)
       faceData.width = faceSize
       faceData.height = faceSize
+      faceData.name = names[i]
 			faces.push(faceData);
 		}
 

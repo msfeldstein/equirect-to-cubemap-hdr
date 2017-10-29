@@ -1,14 +1,15 @@
 #!/usr/bin/env node
 
 const fs = require('fs')
+const path = require('path')
 const getPixels = require('get-pixels')
 const EquirectToCubemapFaces = require('./equirect-to-cube')
 const HDR = require('hdr')
 const writeHDR = require('./write-hdr')
 
-const output = process.argv[2]
-console.log(output)
-if (!output) {
+const input = process.argv[2]
+console.log(input)
+if (!input) {
   console.log("Usage: equirect-to-cubemap path/to/equirect.hdr")
   return
 }
@@ -28,11 +29,15 @@ hdrLoader.on('load', function() {
   })
   let i = 0
   
+  const outPath = input + '.cubemaps'
+  if (!fs.existsSync(outPath)){
+    fs.mkdirSync(outPath);
+  }
   cubes.forEach((cube) => {
-    const outName = `./out/${cube.name}.hdr`
+    const outName = `${outPath}/${cube.name}.hdr`
     writeHDR(cube, cube.width, cube.height, outName)
     console.log("Written ", outName)
   })
 })
-const file = fs.createReadStream(output)
+const file = fs.createReadStream(input)
 file.pipe(hdrLoader)

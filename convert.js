@@ -4,7 +4,7 @@ const fs = require('fs')
 const path = require('path')
 const getPixels = require('get-pixels')
 const EquirectToCubemapFaces = require('./equirect-to-cube')
-const HDR = require('hdr')
+const HDRLoader = require('./hdr-load')
 const writeHDR = require('./write-hdr')
 
 const input = process.argv[2]
@@ -17,7 +17,7 @@ if (!input || input == '-h') {
 
 console.log(`>> Generating maps for ${input} at ${outputResolution}px`)
 
-const hdrLoader = new HDR.loader()
+const hdrLoader = new HDRLoader()
 hdrLoader.on('load', function() {
   // data: Float32Array of pixel colors with length = width*height*3 
   //       in non-planar [X, Y, Z, X, Y, Z, ...] pixel layout 
@@ -36,9 +36,10 @@ hdrLoader.on('load', function() {
   if (!fs.existsSync(outPath)){
     fs.mkdirSync(outPath);
   }
+  console.log(this.headers)
   cubes.forEach((cube) => {
     const outName = `${outPath}/${cube.name}.hdr`
-    writeHDR(cube, cube.width, cube.height, outName)
+    writeHDR(cube, cube.width, cube.height, this.headers, outName)
     console.log("Written ", outName)
   })
 })

@@ -4,7 +4,7 @@ const mmmeEncoding = require('mmme-encoding')
  * hdrData<Float32Array> of pixel color data X,Y,Z,X,Y,Z
  */
 
-module.exports = function writeHdr(hdrData, width, height, path) {
+module.exports = function writeHdr(hdrData, width, height, headers, path) {
   const header = [
     '#?RADIANCE',
     '# Made with Noodles',

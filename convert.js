@@ -6,6 +6,7 @@ const getPixels = require('get-pixels')
 const EquirectToCubemapFaces = require('./equirect-to-cube')
 const HDRLoader = require('./hdr-load')
 const writeHDR = require('./write-hdr')
+const convolve = require('./convolve')
 
 const input = process.argv[2]
 const outputResolution = parseInt(process.argv[3]) || 256
@@ -25,6 +26,11 @@ hdrLoader.on('load', function() {
   equirectData.width = this.width
   equirectData.height = this.height
   console.log(this.headers)
+  
+  const convolved = convolve(equirectData, this.width, this.height, 0.3)
+  writeHDR(convolved, this.width, this.height, this.headers, '/Users/feldstein/Desktop/convolved.hdr')
+  return
+  
   const cubes = EquirectToCubemapFaces(equirectData, outputResolution, {
     elementCount: 3,
     pixelType: Float32Array,

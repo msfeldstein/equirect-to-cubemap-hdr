@@ -4,7 +4,5 @@ Convert an equirectangular .hdr file into 6 cubemaps .hdr files.  Output resolut
 
 ## Usage
 
-`equirect-to-cubemap path/to/equirect.hdr [optional output resolution in pixels]`
-
-
-
+npm install
+npm start

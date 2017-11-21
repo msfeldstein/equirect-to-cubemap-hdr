@@ -43,7 +43,8 @@ dragDrop(renderer.domElement, function(files, pos) {
       
       const renderTarget = packer.CubeUVRenderTarget
       
-      // FloatToHDR(renderTarget, renderer)
+      FloatToHDR(renderTarget, renderer)
+      console.log("DOING HDR TOO")
       TextureToJPG(renderTarget, renderer)
     })
   })

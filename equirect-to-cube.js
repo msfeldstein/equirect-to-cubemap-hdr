@@ -12,14 +12,13 @@ var equirectToCubemapFaces = (function() {
 
 	// These are approximations that assume gamma is 2.0. Not ideal, but close enough.
 	function srgbToLinear(v) {
-    return v
+		return Math.pow(v, 2.2);
 		// var component = (+v * (1.0 / 255.0));
 		// return component * component;
 	}
 
 	function linearToSRGB(v) {
-    return v
-		// return (sqrt(v) * 255.0) | 0;
+    	return Math.pow(v, 1.0 / 2.2);
 	}
 
 	function nearestPowerOfTwo(n) {
@@ -109,10 +108,10 @@ var equirectToCubemapFaces = (function() {
 					var b = (bA*(1.0-mu)*(1.0-nu) + bB*mu*(1.0-nu) + bC*(1.0-mu)*nu + bD*mu*nu);
 					var a = (aA*(1.0-mu)*(1.0-nu) + aB*mu*(1.0-nu) + aC*(1.0-mu)*nu + aD*mu*nu);
 					var ia = 1.0 / a;
-					faceData[outPos+0] = linearToSRGB(r * ia);
-					faceData[outPos+1] = linearToSRGB(g * ia);
-					faceData[outPos+2] = linearToSRGB(b * ia);
-					faceData[outPos+3] = (a * 255.0);
+					faceData[outPos+0] = linearToSRGB(r * ia) / 1.0;
+					faceData[outPos+1] = linearToSRGB(g * ia) / 1.0;
+					faceData[outPos+2] = linearToSRGB(b * ia) / 1.0;
+					faceData[outPos+3] = (1);
 				}
 			}
 		}

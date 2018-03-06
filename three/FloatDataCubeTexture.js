@@ -6,9 +6,9 @@
 THREE.FloatDataCubeTexture = function ( cubeTextureFloatData, resolution ) {
 	var texture = new THREE.CubeTexture();
 
-	texture.type = THREE.FloatType;
+	// texture.type = THREE.FloatType;
 	texture.encoding =  THREE.LinearEncoding;
-	texture.format = THREE.RGBFormat
+	texture.format = THREE.RGBAFormat
 
 	texture.anisotropy = 0;
 
@@ -16,7 +16,7 @@ THREE.FloatDataCubeTexture = function ( cubeTextureFloatData, resolution ) {
 		const texData = cubeTextureFloatData[i]
 		var dataTexture = new THREE.DataTexture( texData.data, texData.width, texData.height );
 		dataTexture.format = texture.format;
-		dataTexture.type = texture.type;
+		// dataTexture.type = texture.type;
 		dataTexture.encoding = texture.encoding;
 		dataTexture.minFilter = texture.minFilter;
 		dataTexture.magFilter = texture.magFilter;

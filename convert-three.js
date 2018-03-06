@@ -3,7 +3,7 @@ require('./three/PMREMGenerator')
 require('./three/FloatDataCubeTexture')
 require('./three/PMREMCubeUVPacker')
 const dragDrop = require('drag-drop')
-const splitter = require('./cube-splitter')
+const splitter = require('./jpg-cube-splitter')
 const bufferOps = require('./buffer-ops')
 const FloatToHDR = require('./three/FloatTextureToHDR')
 const TextureToJPG = require('./three/FloatTextureToJPG')
@@ -25,14 +25,13 @@ document.body.style.margin = 0
 renderer.setSize(W, H)
 
 dragDrop(renderer.domElement, function(files, pos) {
-  if (files.length > 1 || files[0].fullPath.indexOf('.hdr') == -1) {
-    return alert("Only drop .hdr equirects")
-  }
+  // if (files.length > 1 || files[0].fullPath.indexOf('.hdr') == -1) {
+  //   return alert("Only drop .hdr equirects")
+  // }
   const reader = new FileReader()
   reader.addEventListener('load', function(e) {
-    const hdrArrayBuffer = reader.result
-    const stream = bufferOps.arrayBufferToStream(hdrArrayBuffer)
-    const hdrReader = splitter(parseInt(opts.cubeResolution), stream, function(cube) {
+    const imageBuffer = Buffer.from(reader.result) // result is ArrayBuffer
+    const hdrReader = splitter(parseInt(opts.cubeResolution), imageBuffer, function(cube) {
       const cubemap = new THREE.FloatDataCubeTexture(cube, parseInt(opts.cubeResolution))
       
       const pmremGenerator = new THREE.PMREMGenerator(cubemap)
@@ -43,8 +42,6 @@ dragDrop(renderer.domElement, function(files, pos) {
       
       const renderTarget = packer.CubeUVRenderTarget
       
-      FloatToHDR(renderTarget, renderer)
-      console.log("DOING HDR TOO")
       TextureToJPG(renderTarget, renderer)
     })
   })
